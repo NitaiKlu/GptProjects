@@ -69,6 +69,7 @@ class PromptRunner:
 
     # parse a command in natural language to a prompt to be run over chatGPT
     def createPrompt(self, commandToParse):
+        # temporary
         return commandToParse
 
     # STATIC: gets a text and estimates the number of tokens used in the text
