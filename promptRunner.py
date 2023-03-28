@@ -15,12 +15,14 @@ TODO
 """
 # importing the API of chatGPT
 import openai
+import os
 
 # the PromptRunner class
 class PromptRunner:
     # PromptRunner class variables - history of all runs and general info needed
+    pathTokey = os.getcwd()+"/key.txt"
     # the file on my comp that holds the secret key
-    apiFile = open("C:\\Users\\nitai\\Technion\\key.txt", "r")
+    apiFile = open(pathTokey, "r")
     # get the apiKey from the file
     apiKey = apiFile.read()
     # update the module about the key
@@ -65,7 +67,7 @@ class PromptRunner:
         PromptRunner.numberOfPrompts += 1
         PromptRunner.numberOfTokens += response.usage.total_tokens
 
-        return response
+        return response 
 
     # parse a command in natural language to a prompt to be run over chatGPT
     def createPrompt(self, commandToParse):
@@ -100,7 +102,7 @@ class PromptRunner:
         return self.m_maxTokensResponse
     
     # get the max number of tokens in a prompt of the chatGPT
-    def getMaxTokensResponse(self):
+    def getMaxTokensPrompt(self):
         return self.m_maxTokensPrompt 
 
     # update the max number of tokens in a response of the chatGPT
