@@ -20,9 +20,6 @@ The different types of initialization are equivalent to the modes of the Teacher
 
 """
 
-from promptRunner import PromptRunner
-
-
 class Initializer:
     # c'tor that doesn't do much. the other functions in the API
     # will be the ones the user uses to initialize his conversation
@@ -41,10 +38,14 @@ class Initializer:
                          timetense = "all", numOfWordsInAnswer = "30", 
                           mistakesCorrection = "always") -> bool:
         # general Italian Conversation prompts
-        self.runAndValidate("from now on talk in italian until I say \"stop\".")
-        self.runAndValidate("")
+        successResult, response = self.runAndValidate("from now on talk in italian until I say \"stop\".")
+        if successResult == False:
+            pass
 
         # setting vocab level of the chat
+        successResult, response = self.runAndValidate("")
+        if successResult == False:
+            pass
 
         # setting the time tense that the chat will use
 
@@ -73,4 +74,4 @@ class Initializer:
         # run the prompt over the chat
         response = self.m_promptRunner.runCommand(promptToRun)
         # validate the response and return the answer
-        return Initializer.validateResponse(responseToValidate=response)
+        return Initializer.validateResponse(responseToValidate=response), response
