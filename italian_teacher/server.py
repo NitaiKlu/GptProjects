@@ -22,8 +22,8 @@ from promptRunner import PromptRunner
 
 
 class Server:
-    def __init__(self, mode="conversation", maxTokensPrompt=20,
-                 maxTokensResponse=20) -> None:
+    def __init__(self, mode="conversation", maxTokensPrompt=100,
+                 maxTokensResponse=100) -> None:
         self.m_mode = mode
         self.m_promptRunner = PromptRunner(maxTokensPrompt, maxTokensResponse)
         self.m_initializer = Initializer(self.m_promptRunner)
@@ -41,24 +41,39 @@ class Server:
 
         elif self.m_mode.lower() == "unseen":
             self.m_initializer.initUnseenExam()
+    
+    def startConversation(self):
+        # cute starting message
+        self.m_whisperer.textToAudio("Ciao! Mi chiamo chat GPT. Che piacere parlare con te!", language='italian')
+        language = 'italian'
+        # the conversation instance
+        while True:
+            userCommand = self.getAudioCommand(language=language) # listen to the user's speech
+
+            if userCommand == "basta" or userCommand == "stop": # the user wants to stop
+                self.m_whisperer.textToAudio("Arivaderci!", language='italian')
+                break
+            elif userCommand == "error_in_speech": # the audio of the user wasn't clear
+                print("Trying again in 2 seconds...")
+                self.m_whisperer.wait(2)
+                continue
+
+            response = self.runTextCommand(userCommand) # chat responses as text
+
+            self.m_whisperer.textToAudio(response.choices[0].text, language=language) # chat response out loud
+
+            inputStr = input("Type 'en'/'it' to change languages. Anything else to continue:\n").strip() # user times the next audio
+            if inputStr == 'en':
+                language = 'english'
+            if inputStr == 'it':
+                language = 'italian'
 
     def runTextCommand(self, command):
-        # some command manipulation ...
-
         # run the command 
         response = self.m_promptRunner.runCommand(command=command)
-
-        # some response manipulation ...
         return response
 
-    def runAudioCommand(self, audio):
+    def getAudioCommand(self, language):
         # parse the audio input into text
-        command = self.m_whisperer.audioToText(audio=audio)
-
-        # run the text
-        response = self.runTextCommand(command=command)
-
-        # parse response back to audio
-        audioResponse = self.m_whisperer.textToAudio(response)
-
-        return audioResponse
+        userCommand = self.m_whisperer.audioToText(language=language) 
+        return userCommand

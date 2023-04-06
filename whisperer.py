@@ -34,8 +34,10 @@ class Whisperer:
                 return text
             except sr.UnknownValueError:
                 print("Could not understand audio")
+                return "error_in_speech"
             except sr.RequestError as e:
                 print("Could not request results from Google Speech Recognition service; {0}".format(e))
+                return "error_in_speech"
 
     # this method converts the given text (parameter) to an audio file and then plays it and deletes the audio. 
     # to save the audio, specify 'toSave = True' and the path, name of the file under 'pathToBeSaved = <path>', 'fileName = <name>' 
@@ -56,7 +58,7 @@ class Whisperer:
 
         Whisperer.ctr += 1 # update the number of uses
 
-        time.sleep(lengthSeconds) # sleep so that the user hears all of the voice message
+        time.sleep(lengthSeconds + 1) # sleep so that the user hears all of the voice message
         
         # if we're not saving this file
         if toSave == False:  
@@ -86,5 +88,7 @@ class Whisperer:
         # cut to get the the first two letters only
         return lowerLanguage[:2]
     
-
+    @staticmethod
+    def wait(seconds) -> None:
+        time.sleep(secs=seconds)
 

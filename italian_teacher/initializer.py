@@ -34,24 +34,22 @@ class Initializer:
     # a long function documentation that explains about the options of each 
     # function parameter. This function returns a bool val of True if the 
     # initiation succeeded or not
-    def initConversation(self,topics, vocbularyLevel = "medium", 
-                         timetense = "all", numOfWordsInAnswer = "30", 
-                          mistakesCorrection = "always") -> bool:
+    def initConversation(self, numOfWordsInAnswer = "30") -> bool:
         # general Italian Conversation prompts
-        successResult, response = self.runAndValidate("from now on talk in italian until I say \"stop\".")
+        successResult = self.runAndValidate("from now on talk in italian until I say \"stop\" or if I ask you a question in english")
+        if successResult == False:
+            pass
+        
+        # set mistakes correction
+        successResult = self.runAndValidate("Whenever I make a mistake in Italian you correct me with an explanation. ")
         if successResult == False:
             pass
 
         # setting vocab level of the chat
-        successResult, response = self.runAndValidate("")
+        # setting the maximal number of words in the response
+        successResult = self.runAndValidate("Speak basic italian and don't use very difficult vocabulary. Your answers shouldn't be more than" + str(numOfWordsInAnswer) + "words long")
         if successResult == False:
             pass
-
-        # setting the time tense that the chat will use
-
-        # setting the maximal number of words in the response
-
-        # setting the mistakes correction mode of the chat
 
     def initGrammerTeacher(self, manyManyArgs):
         pass
@@ -74,4 +72,4 @@ class Initializer:
         # run the prompt over the chat
         response = self.m_promptRunner.runCommand(promptToRun)
         # validate the response and return the answer
-        return Initializer.validateResponse(responseToValidate=response), response
+        return Initializer.validateResponse(responseToValidate=response)

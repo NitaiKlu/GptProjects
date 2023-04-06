@@ -17,19 +17,9 @@ while True:
             # Clear the terminal screen
             os.system('cls' if os.name == 'nt' else 'clear')
 
-        elif user_input.lower() == "ls":
-            # List the files in the current directory
-            files = os.listdir('.')
-            for file in files:
-                print(file)
-
-        elif user_input.lower().startswith("cd"):
-            # Change the current directory
-            try:
-                path = user_input.split(' ')[1]
-                os.chdir(path)
-            except Exception as e:
-                print(f"Error: {e}")
+        elif user_input.lower() == "start teacher":
+            italianTeacher = Server(maxTokensPrompt=40, maxTokensResponse=40)
+            italianTeacher.startConversation()
         
         elif user_input.lower() == "exit":
             print("Exiting terminal...")
