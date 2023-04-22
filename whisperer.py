@@ -41,6 +41,7 @@ class Whisperer:
 
     # this method converts the given text (parameter) to an audio file and then plays it and deletes the audio. 
     # to save the audio, specify 'toSave = True' and the path, name of the file under 'pathToBeSaved = <path>', 'fileName = <name>' 
+    # returns the full name of the mp3 file if saved, "removed" otherwise
     @staticmethod
     def textToAudio(text, language = 'english', toSave = False, pathToBeSaved = os.getcwd(), fileName = 'audioFile_'):
         lang = Whisperer.getShortLanguageCode(language=language) # get language code
@@ -58,12 +59,25 @@ class Whisperer:
 
         Whisperer.ctr += 1 # update the number of uses
 
-        time.sleep(lengthSeconds + 1) # sleep so that the user hears all of the voice message
+        Whisperer.wait(lengthSeconds + 1) # sleep so that the user hears all of the voice message
         
         # if we're not saving this file
         if toSave == False:  
             os.remove(fullName)
-
+            return "removed"
+        else:
+            return fullName
+        
+    # gets a name of a mp3 file and plays it. 
+    # will fail if the file doesn't exist. 
+    @staticmethod
+    def playAudio(fileName):
+        mp3_file = AudioSegment.from_file(fileName, format="mp3")
+        lengthSeconds = len(mp3_file) / 1000 # length of the audio in seconds
+        os.system(fileName)  # Play audio file
+        Whisperer.ctr += 1 # update the number of uses
+        Whisperer.wait(lengthSeconds + 1) # sleep so that the user hears all of the voice message
+    
     # gets a language in natural language and returns its "code" in the Google Speech Recognition service. 
     # english -> en-EN
     # Hebrew -> he-HE
@@ -90,5 +104,5 @@ class Whisperer:
     
     @staticmethod
     def wait(seconds) -> None:
-        time.sleep(secs=seconds)
+        time.sleep(seconds + 1)
 

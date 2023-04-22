@@ -1,4 +1,5 @@
 # Italian Teacher Project
+## Future Support:
 
 ## General
 In this prject I create a GPT-based Italian teacher. This beta version will have

@@ -58,7 +58,7 @@ class PromptRunner:
 
         # generate the response from chatGPT
         response = openai.Completion.create(
-            engine="text-davinci-001", prompt=prompt, max_tokens=30)
+            engine="text-davinci-001", prompt=prompt, max_tokens=self.m_maxTokensResponse)
 
         # methods update - add to history of this conversation
         self.m_conversation.append(response)
